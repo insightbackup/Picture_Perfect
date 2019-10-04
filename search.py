@@ -45,7 +45,7 @@ for pickleTree in glob.glob(args["tree"]+"/vptree_*.pickle"):
     #tree=pickle.loads(open(pickleTree, "rb").read())
 
     #Perform search in VPTree
-    print("[INFO] performing search on {pickle}".format(pickle=pickle))
+    print("[INFO] performing search on {pickle}".format(pickle=pickleTree))
     results = tree.get_all_in_range(queryHash, args["distance"])
     results = sorted(results)
 
@@ -53,8 +53,8 @@ for pickleTree in glob.glob(args["tree"]+"/vptree_*.pickle"):
     counter=0 #nNsure that only top 10 results are used
     for i, result in enumerate(results):
         resultsList.append(result)
-        if i>10:
-            break #Grabs first ten results, moves on to next tree
+        if i>=1:
+            break #Grabs first result (modifiable), moves on to next tree
         else:
             i+=1
 #Sort final list of all resutls
@@ -62,20 +62,16 @@ resultsList=sorted(resultsList)
 end = time.time()
 print("[INFO] search took {} seconds".format(end - start))
 
-
-
 # loop over the results (Performed on flask UI??)
 for (d, h) in resultsList:
     #grab all image paths in our dataset with the same hash
-    resultPaths = hashes.get(h, [])
+    resultPaths = [hashes.get(int(h), [])]
     print("[INFO] {} total images(s) with d: {}, h:{}".format(len(resultPaths), d, h))
-
     # loop over the result paths
     for resultPath in resultPaths:
         # load the result image and display it to our screen
         result = cv2.imread(resultPath)
-#        cv2.imshow("Result", result)
- #       cv2.waitKey(0) #THIS WAITS FOR USER INPUT (PROBABLY WON'T WORK IN SQL SEARCH))
-        print(result)
-
-
+        print(resultPath)
+        #cv2.imshow("Result", result)
+        cv2.waitKey(0) #THIS WAITS FOR USER INPUT (PROBABLY WON'T WORK IN SQL SEARCH))
+~
