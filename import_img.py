@@ -2,7 +2,7 @@ from PIL import Image
 from io import BytesIO
 import numpy as np
 import boto3
-import s3fs
+#import s3fs
 import argparse
 
 
@@ -102,3 +102,26 @@ if __name__== '__main__':
 
     key=get_image_keys(args["bucket"], args["folder"])
     read_image_from_s3(args["bucket"], key, args["region_name"])
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~

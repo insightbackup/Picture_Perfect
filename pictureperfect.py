@@ -1,5 +1,24 @@
+#Spark Submit (for testing in CLI)
+#./bin/spark-submit --master spark://10.0.0.11:7077 --executor-memory 6g test.py
+
+#Initiate PySpark/Python
+from pyspark.sql import SparkSession
+from pyspark import SparkContext
+import sys
+
+sc=SparkContext()
+
+spark=SparkSession.builder \
+    .appName("PicturePerfect") \
+    .getOrCreate()
+
 #Custom Modules
-import index_images
+sc.addFile("/home/ubuntu/Picture_Perfect/import_img.py")
+sc.addFile("/home/ubuntu/Picture_Perfect/hashing.py")
+
+from pyspark import SparkConf, SparkContext, SparkFiles
+sys.path.insert(0,SparkFiles.getRootDirectory())
+
 import import_img as impg
 import hashing as hs
 
@@ -10,46 +29,30 @@ from pyspark.ml.linalg import SparseVector, DenseVector, Vectors
 from pyspark.sql.functions import col
 from pyspark.ml.feature import MinHashLSH, BucketedRandomProjectionLSH
 from pyspark.ml.clustering import KMeans, BisectingKMeans
-from pyspark.sql import SparkSession
-from pyspark import SparkContext
 
 #Python Packages
 import numpy as np
 from PIL import Image
 from io import BytesIO
 import boto3
-import s3fs
+#import s3fs
 from imutils import paths
 import argparse
 import time
-import sys
 import cv2
 import os
 import vptree
 import pickle
 
-#Spark Submit (for testing in CLI)
-#./bin/spark-submit --master spark://10.0.0.11:7077 --executor-memory 6g test.py
-
-sc=SparkContext()
-
-spark=SparkSession.builder \
-    .appName("PicturePerfect") \
-    .getOrCreate()
-
 #S3 Bucket/Folder
 bucket='vasco-imagenet-db'
 folders='test_small'
-
-def hamming(a, b):
-    # compute and return the Hamming distance between the integers
-    return bin(int(a) ^ int(b)).count("1")
 
 #Import as Spark RDD
 urlsRDD=sc.textFile("s3a://"+bucket+"/test_large.txt")
 
 #Download and acquire image vectors
-img_vectors=urlsRDD.map(lambda url: (url, zread_image_from_s3(bucket, url)))
+img_vectors=urlsRDD.map(lambda url: (url, impg.read_image_from_s3(bucket, url)))
 
 #dHash function
 img_hash=img_vectors.map(lambda img: (img[0], hs.dhash(img[1], 16)))
@@ -106,3 +109,4 @@ print("")
 
 #Stop Session
 spark.stop()
+~

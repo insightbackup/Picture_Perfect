@@ -9,6 +9,7 @@ import numpy as np
 import vptree
 from pyspark.ml.linalg import Vectors
 from pyspark.sql.functions import col
+import pickle
 
 def dhash(image, hashSize=8):
     # if image is colored, convert the image to grayscale
@@ -63,7 +64,6 @@ def dense_to_array(df):
     floatList=[float(d[0]) for d in df]
     return floatList
 
-#Run VPTree on Each Partition
 def pickleTree(partitionHashList):
     partitionList=len(partitionHashList) #Total number of partiitons
     singlets=[]
@@ -75,7 +75,7 @@ def pickleTree(partitionHashList):
                 dHashList.append(dHash['dHash'])
             #Performs VPTree on partition cluster and does pickle suprise
             print('pipis: '+str(len(dHashList)))
-            tree=vptree.VPTree(dHashList, hs.hamming)
+            tree=vptree.VPTree(dHashList, hamming)
             print("[INFO] serializing VP-Tree for {partition} out of {partitionList} Partitions".format(partition=p, partitionList=partitionList))
             filer = open("vptree_{partition}.pickle".format(partition=p), "wb")
             filer.write(pickle.dumps(tree))
@@ -88,9 +88,10 @@ def pickleTree(partitionHashList):
         else:
             print("Partition Empty")
     #Performs VPTree on singlet list and does pickle suprise
-    tree=vptree.VPTree(singlets, hs.hamming)
+    tree=vptree.VPTree(singlets, hamming)
     print("[INFO] serializing VP-Tree for Remaining Singlet Images")
     filer = open("vptree_0.pickle", "wb")
     filer.write(pickle.dumps(tree))
     filer.close()
 
+~
