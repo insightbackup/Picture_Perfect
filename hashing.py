@@ -93,5 +93,3 @@ def pickleTree(partitionHashList):
     filer = open("vptree_0.pickle", "wb")
     filer.write(pickle.dumps(tree))
     filer.close()
-
-~

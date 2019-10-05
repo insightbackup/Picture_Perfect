@@ -102,26 +102,3 @@ if __name__== '__main__':
 
     key=get_image_keys(args["bucket"], args["folder"])
     read_image_from_s3(args["bucket"], key, args["region_name"])
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~

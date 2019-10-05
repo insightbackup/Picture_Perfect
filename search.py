@@ -74,4 +74,3 @@ for (d, h) in resultsList:
         print(resultPath)
         #cv2.imshow("Result", result)
         cv2.waitKey(0) #THIS WAITS FOR USER INPUT (PROBABLY WON'T WORK IN SQL SEARCH))
-~

@@ -55,7 +55,7 @@ urlsRDD=sc.textFile("s3a://"+bucket+"/test_large.txt")
 img_vectors=urlsRDD.map(lambda url: (url, impg.read_image_from_s3(bucket, url)))
 
 #dHash function
-img_hash=img_vectors.map(lambda img: (img[0], hs.dhash(img[1], 16)))
+img_hash=img_vectors.map(lambda img: (img[0], hs.convert_hash(hs.dhash(img[1], 16))))
 
 #Makes dictionary from RDD continaing dHash (key) and URLs (value)
 dHash_dict=img_hash.map(lambda (url, dHash): (dHash, url))
@@ -109,4 +109,3 @@ print("")
 
 #Stop Session
 spark.stop()
-~
