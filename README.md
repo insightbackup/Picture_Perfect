@@ -42,4 +42,4 @@ Employing Data Abstractions in Image Search
 `Apache Spark`, `AWS S3`, `PostgreSQL`
 
 ## Presentation Link
-https://docs.google.com/presentation/d/1erAq88zNWMnoFMwwpsJbypjkIJAuxcZIZGhsqZLRiQc/edit?usp=sharing
+http://bit.ly/Vasco_PicturePerfect
