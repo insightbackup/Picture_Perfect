@@ -63,4 +63,8 @@ Employing Data Abstractions in Image Search
 ## Technologies
 `Apache Spark`, `AWS S3`, `Locality Sensitive Hashing`, `LSH`, `Vantage Point Tree`, `ImageNet`
 
+<<<<<<< HEAD
 ## [Presentation Link](http://bit.ly/Vasco_PicturePerfect "Picture Perfect Presentation Slides")
+=======
+## [Presentation Link](http://bit.ly/Vasco_PicturePerfect "Picture Perfect Presentation Slides")
+>>>>>>> 61933e8de29bda4c0c36eb1ce3a1bb9a703cd65d
