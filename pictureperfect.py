@@ -49,13 +49,13 @@ bucket='vasco-imagenet-db'
 folders='test_small'
 
 #Import as Spark RDD
-urlsRDD=sc.textFile("s3a://"+bucket+"/test_large.txt")
+urlsRDD=sc.textFile("s3a://"+bucket+"/urls.txt")
 
 #Download and acquire image vectors
 img_vectors=urlsRDD.map(lambda url: (url, impg.read_image_from_s3(bucket, url)))
 
 #dHash function
-img_hash=img_vectors.map(lambda img: (img[0], hs.convert_hash(hs.dhash(img[1], 16))))
+img_hash=img_vectors.map(lambda img: (img[0], hs.convert_hash(hs.dhash(img[1], 32))))
 
 #Makes dictionary from RDD continaing dHash (key) and URLs (value)
 dHash_dict=img_hash.map(lambda (url, dHash): (dHash, url))
@@ -70,7 +70,7 @@ img_sparse=img_hash.map(lambda img: (img[0], str(img[1]), hs.sparse_vectorize(im
 df = spark.createDataFrame(img_sparse, ["url", "dHash", "sparseHash"])
 
 #MinHashLSH
-mh = MinHashLSH(inputCol="sparseHash", outputCol="minHash", numHashTables=2, seed=69)
+mh = MinHashLSH(inputCol="sparseHash", outputCol="minHash", numHashTables=4, seed=69)
 model = mh.fit(df)
 
 #BucketedRandomProjectionLSH

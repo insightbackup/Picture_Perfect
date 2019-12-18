@@ -1,0 +1,8 @@
+#Ignore All Pickle Files
+*.pickle
+
+#Ignore all Images
+*.jpg
+*.JPEG
+*.png
+*.PNG

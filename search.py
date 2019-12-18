@@ -60,7 +60,8 @@ for pickleTree in glob.glob(args["tree"]+"/vptree_*.pickle"):
 #Sort final list of all resutls
 resultsList=sorted(resultsList)
 end = time.time()
-print("[INFO] search took {} seconds".format(end - start))
+no_images=len(set(hashes))
+print("[INFO] search took {} seconds to search {} images".format(end - start, no_images))
 
 # loop over the results (Performed on flask UI??)
 for (d, h) in resultsList:

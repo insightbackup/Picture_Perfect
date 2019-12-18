@@ -1,6 +1,8 @@
 # Picture_Perfect
 Employing Data Abstractions in Image Search
 
+ # [Live Demo](http://bigdatageno.me/ "Picture Perfect")
+
 ## Background/Problem
 
 - Identifying and retrieving similar images within large databases is computationally intensive
@@ -16,30 +18,49 @@ Employing Data Abstractions in Image Search
 
 - Distributed networks allow the computational work to be split up between nodes to improve the overall speed of the image search
 
-
+## Business/Use Case
+- Functional reverse image search/retreival engine (finds exact copies and near-duplicate images)
+- Copyright Infringement
+    - Can recognize if photo is stolen and used with permission even if modified
 
 ## Tech Stack
 
 - **S3:** Storage
 - **Apache Spark:** Distributed Cluster-Computing Framework 
-- **PostgreSQL:** Queryable Relational Database
+- **Amazon EC2:** Hosts Cluster & Flask Web App
+- **ImageNet** ML Image Data Set containing over 1.5 million images (>155GB data)
 
-## Data Engineering Challenge
+## Pipeline
 
-- Scaling up to full-scale dataset
-- Optimization
-    - Performing correct data abstractions so that a similarity comparison can be run efficiently across all images in dataset
-- Partitioning dataset properly so all images are compared
+![alt text](pipeline.png "Project Pipeline")
 
-## Business/Use Case
-- Image search/retrieval (finds similar images)
-- Quickly finding unwanted duplicates in image databases to save on storage space
-- Security/Forensics: Narrowing down list of suspects using face, thumbprint, etc
-- Online shopping search tool: find other products that look similar to the particular product you are interested in (e.g. similar style hats or shoes)
+## Challenge 1: Data Abstractions
 
+1. Convert all color images in dataset to grayscale and resize to 32x32 pixels
+2. Vectorize grayscale images and convert to binary array (using diffHash)
+3. Images can be further compressed as integer representation
+* Hamming distance can be utilized to rapidly compare the binary representation of two different images
+
+## Challenge 2: Time Complexity
+
+* A pairwise comparison of all images against eachother would be *O*(n)<sup>2</sup>
+* Locality Sensitive Hashing (LSH) and Vantage Point Trees (VP-Trees) can be utlized to improve time-complexity of queries to order of *O*(log(n))
+
+## Challenge 3: Clustering
+
+* Typically VP-Trees alone would work fine at improving time-complexity of the image search engine when queries are *not* performed on distributed networks
+* On distributed networks, near-duplicate images or even exact copies may be sent to separate partitions or nodes on the distributed network which would lead to improper clustering
+* Locality Sensitive Hashing (LSH) can be employed to 'pre-cluster' images by similarity and repartition the data on the groups of similar images that form
+* Then VP-Tree clustering can be performed in parallel on each paratitioned group of similar images to calculate their similarity/distance within each group
+
+## About Me
+
+* My background is in bioinformatics/genomics
+* I started in the stem cell domain but overtime gained interest in the computational side of biological research
+* Working with genomic data sets led me into an interest in becoming acquainted with the tools and techniques data engineers use to process with large volumes of data
+* I am dedicated to my work and passionate about learning but I always try to find time to relax and enjoy my hobbies like playing/writing music and cooking
 
 ## Technologies
-`Apache Spark`, `AWS S3`, `PostgreSQL`
+`Apache Spark`, `AWS S3`, `Locality Sensitive Hashing`, `LSH`, `Vantage Point Tree`, `ImageNet`
 
-## Presentation Link
-https://docs.google.com/presentation/d/1erAq88zNWMnoFMwwpsJbypjkIJAuxcZIZGhsqZLRiQc/edit?usp=sharing
+## [Presentation Link](http://bit.ly/Vasco_PicturePerfect "Picture Perfect Presentation Slides")
