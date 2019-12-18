@@ -1,0 +1,45 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-7">
+    <h2>Select an Image</h2>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+<!--        <p><img src="https://vasco-imagenet-db.s3-us-west-2.amazonaws.com/person_search.png" style="height: 250px;" class="img"></p> -->
+        <p><img src="../static/images/vasco.jpg" style="height: 250px;" class="img"></p>
+        <p><img src="../static/images/cutey_dog.jpg" style="height: 250px;" class="img"></p>
+      </div>
+      <div class="col-md-6">
+        <p><img src="../static/images/insight_logo.png" style="height: 250px;" class="img"></p>
+        <p><img src="../static/images/person_search.png" style="height: 250px;" class="img"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-md-offset-1">
+    <h2>Results</h2>
+    <br>
+    <p id="searching">Searching...</p>
+    <p id="error">Oh no! No results! Check your internet connection.</p>
+    <table class="table" id="results-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="results">
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<br>
+
+{% endblock %}
+
